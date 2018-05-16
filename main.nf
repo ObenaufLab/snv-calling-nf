@@ -63,7 +63,9 @@ Channel
 
 process gatk {
 
-	tag { name }
+	tag { parameters.name }
+	
+	container = 'docker://broadinstitute/gatk:4.0.4.0'
      
     input:
     val(parameters) from samples
@@ -76,11 +78,13 @@ process gatk {
         
     shopt -s expand_aliases
     
-    gatk MuTect2 \
+    gatk Mutect2 \
     	-R !{params.ref} \
-    	-I:tumor !{parameters.tumor} \
-    	-I:normal !{parameters.normal} \
-    	-o !{parameters.sample}.vcf
+    	-I !{parameters.tumor} \
+    	-I !{parameters.normal} \
+    	-tumor !{parameters.name}T \
+    	-normal !{parameters.name}N \
+    	-O !{parameters.name}.vcf
 	
     '''
 }
