@@ -31,7 +31,7 @@ def helpMessage() {
     ================================================================
     DESCRIPTION
     Usage:
-    nextflow run obenauflab/variant-circos-nf
+    nextflow run obenauflab/snv-calling-nf
     Options:
         --samples        	Tab-delimited text file specifying the samples to be 
         					analyzed.
