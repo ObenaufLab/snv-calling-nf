@@ -68,13 +68,19 @@ process gatk {
     input:
     val(parameters) from samples
     
+    output:
+    file('*.vcf') into outGatk
+    
     shell:
-    ''' 
+    '''
+        
     shopt -s expand_aliases
-	
-	echo !{parameters.name}
-	echo !{parameters.normal}
-	echo !{parameters.tumor}
+    
+    gatk MuTect2 \
+    	-R !{params.ref} \
+    	-I:tumor !{parameters.tumor} \
+    	-I:normal !{parameters.normal} \
+    	-o !{parameters.sample}.vcf
 	
     '''
 }
