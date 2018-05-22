@@ -78,7 +78,9 @@ process gatk {
         
     shopt -s expand_aliases
     
-    gatk Mutect2 \
+    gatk --spark-runner LOCAL \
+    	 --java-options '-Xmx!{task.memory.toGiga()}G' \
+    	Mutect2 \
     	-R !{params.ref} \
     	-I !{parameters.tumor} \
     	-I !{parameters.normal} \
