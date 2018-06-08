@@ -113,7 +113,7 @@ process manta {
     			   --tumorBam !{parameters.tumor} \
     			   --referenceFasta !{params.ref} \
     			   --runDir manta \
-    			   --callRegions util/hg38_chromosomes.bed.gz
+    			   --callRegions ${workflow.scriptFile.getParent() + "/util/hg38_chromosomes.bed.gz"}
     			   
     ${PWD}/manta/runWorkflow.py -m local -j !{task.cpus} -g !{task.memory.toGiga()}
 	
