@@ -36,7 +36,7 @@ def helpMessage() {
         --samples        	Tab-delimited text file specifying the samples to be 
         					analyzed.
         					
-        					The following columsn are required:
+        					The following columns are required:
         						- name: Name of the sample
         						- normal: Path to normal bam file
         						- tumor: Path to tumor bam file
@@ -60,11 +60,13 @@ def helpMessage() {
 Channel
     .fromPath( params.samples )
     .splitCsv(sep: '\t', header: true)
-    .set { samplesGatk, samplesManta }
+    .into { samplesGatk ; samplesManta}
 
 process gatk {
 
 	tag { parameters.name }
+	
+	container = 'docker://broadinstitute/gatk:4.0.4.0'
 	     
     input:
     val(parameters) from samplesGatk
@@ -93,6 +95,8 @@ process gatk {
 process manta {
 
 	tag { parameters.name }
+	
+	container = 'docker://obenauflab/strelka:latest'
 	     
     input:
     val(parameters) from samplesManta
