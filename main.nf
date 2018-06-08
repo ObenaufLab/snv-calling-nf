@@ -60,7 +60,7 @@ def helpMessage() {
 Channel
     .fromPath( params.samples )
     .splitCsv(sep: '\t', header: true)
-    .into { samplesGatk ; samplesManta}
+    .into { samplesGatk ; samplesManta ; samplesStrelka}
 
 process gatk {
 
@@ -102,7 +102,7 @@ process manta {
     val(parameters) from samplesManta
     
     output:
-    set val(parameters.name),  "manta/results/variants/candidateSmallIndels.vcf.gz" into outManta
+    "manta/results/variants/candidateSmallIndels.vcf.gz*" into outManta
     
     shell:
     '''
@@ -127,7 +127,8 @@ process strelka {
 	container = 'docker://obenauflab/strelka:latest'
 	     
     input:
-    set val(name), file(mantaVcf) from outManta
+    val(parameters) from samplesStrelka
+    file(mantaVcf) from outManta
     
     output:
     file('strelka/results/variants/*') into outStrelka
@@ -136,9 +137,7 @@ process strelka {
     '''
         
     shopt -s expand_aliases
-    
-    --indelCandidates manta/results/variants/candidateSmallIndels.vcf.gz
-    
+        
     configureStrelkaSomaticWorkflow.py --normalBam !{parameters.normal} \
     			   --tumorBam !{parameters.tumor} \
     			   --referenceFasta !{params.ref} \
