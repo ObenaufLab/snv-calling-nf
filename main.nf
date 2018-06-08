@@ -49,7 +49,8 @@ def helpMessage() {
         ii2                 SLURM execution with singularity on IMPIMBA2
         
     Docker:
-    obenauflab/variant-circos-nf:latest
+    broadinstitute/gatk:4.0.4.0
+    obenauflab/strelka:latest
     
     Author:
     Tobias Neumann (tobias.neumann@imp.ac.at)
@@ -64,9 +65,7 @@ Channel
 process gatk {
 
 	tag { parameters.name }
-	
-	container = 'docker://broadinstitute/gatk:4.0.4.0'
-     
+	     
     input:
     val(parameters) from samples
     
@@ -87,6 +86,32 @@ process gatk {
     	-tumor !{parameters.name}T \
     	-normal !{parameters.name}N \
     	-O !{parameters.name}.vcf
+	
+    '''
+}
+
+process manta {
+
+	tag { parameters.name }
+	     
+    input:
+    val(parameters) from samples
+    
+    output:
+    file('manta/results/variants/candidateSmallIndels.vcf.gz*') into outManta
+    
+    shell:
+    '''
+        
+    shopt -s expand_aliases
+    
+    configManta.py --normalBam !{parameters.normal} \
+    			   --tumorBam !{parameters.tumor} \
+    			   --referenceFasta !{params.ref} \
+    			   --runDir manta \
+    			   --callRegions util/hg38_chromosomes.bed.gz
+    			   
+    ${PWD}/manta/runWorkflow.py -m local -j !{task.cpus} -g !{task.memory.toGiga()}
 	
     '''
 }
