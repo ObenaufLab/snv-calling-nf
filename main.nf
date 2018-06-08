@@ -102,7 +102,7 @@ process manta {
     val(parameters) from samplesManta
     
     output:
-    "manta/results/variants/candidateSmallIndels.vcf.gz*" into outManta
+    file ("manta/results/variants/candidateSmallIndels.vcf.gz*") into outManta
     
     shell:
     '''
@@ -122,7 +122,7 @@ process manta {
 
 process strelka {
 
-	tag { name }
+	tag { parameters.name }
 	
 	container = 'docker://obenauflab/strelka:latest'
 	     
@@ -143,9 +143,37 @@ process strelka {
     			   --referenceFasta !{params.ref} \
     			   --runDir strelka \
     			   --callRegions !{workflow.scriptFile.getParent() + "/util/hg38_chromosomes.bed.gz"} \
-    			   --indelCandidates !{mantaVcf}
+    			   --indelCandidates !{mantaVcf[0]}
     			   
     ${PWD}/strelka/runWorkflow.py -m local -j !{task.cpus} -g !{task.memory.toGiga()}
+	
+    '''
+}
+
+process caveman {
+
+	tag { parameters.name }
+	
+	container = 'docker://quay.io/wtsicgp/dockstore-cgpwgs:2.0.0'
+	     
+    input:
+    val(parameters) from samplesManta
+    
+    output:
+    file ("manta/results/variants/candidateSmallIndels.vcf.gz*") into outManta
+    
+    shell:
+    '''
+        
+    shopt -s expand_aliases
+    
+    configManta.py --normalBam !{parameters.normal} \
+    			   --tumorBam !{parameters.tumor} \
+    			   --referenceFasta !{params.ref} \
+    			   --runDir manta \
+    			   --callRegions !{workflow.scriptFile.getParent() + "/util/hg38_chromosomes.bed.gz"}
+    			   
+    ${PWD}/manta/runWorkflow.py -m local -j !{task.cpus} -g !{task.memory.toGiga()}
 	
     '''
 }
