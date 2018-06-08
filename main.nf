@@ -60,14 +60,14 @@ def helpMessage() {
 Channel
     .fromPath( params.samples )
     .splitCsv(sep: '\t', header: true)
-    .set { samples }
+    .set { samplesGatk, samplesManta }
 
 process gatk {
 
 	tag { parameters.name }
 	     
     input:
-    val(parameters) from samples
+    val(parameters) from samplesGatk
     
     output:
     file('*.vcf') into outGatk
@@ -95,7 +95,7 @@ process manta {
 	tag { parameters.name }
 	     
     input:
-    val(parameters) from samples
+    val(parameters) from samplesManta
     
     output:
     file('manta/results/variants/candidateSmallIndels.vcf.gz*') into outManta
