@@ -142,7 +142,7 @@ process strelka {
     			   --tumorBam !{parameters.tumor} \
     			   --referenceFasta !{params.ref} \
     			   --runDir strelka \
-    			   --callRegions !{workflow.scriptFile.getParent() + "/util/hg38_chromosomes.bed.gz"} \
+    			   --callRegions !{workflow.scriptFile.getParent() + "/util/hg19_chromosomes.bed.gz"} \
     			   --indelCandidates !{mantaVcf[0]}
     			   
     ${PWD}/strelka/runWorkflow.py -m local -j !{task.cpus} -g !{task.memory.toGiga()}
