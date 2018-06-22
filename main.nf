@@ -65,9 +65,7 @@ Channel
 process gatk {
 
 	tag { parameters.name }
-	
-	container = 'docker://broadinstitute/gatk:4.0.4.0'
-	     
+		     
     input:
     val(parameters) from samplesGatk
     
@@ -95,9 +93,7 @@ process gatk {
 process manta {
 
 	tag { parameters.name }
-	
-	container = 'docker://obenauflab/strelka:latest'
-	     
+		     
     input:
     val(parameters) from samplesManta
     
@@ -123,9 +119,7 @@ process manta {
 process strelka {
 
 	tag { parameters.name }
-	
-	container = 'docker://obenauflab/strelka:latest'
-	     
+		     
     input:
     val(parameters) from samplesStrelka
     file(mantaVcf) from outManta
