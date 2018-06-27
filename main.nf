@@ -60,7 +60,7 @@ def helpMessage() {
 Channel
     .fromPath( params.samples )
     .splitCsv(sep: '\t', header: true)
-    .into { samplesGatk ; samplesManta ; samplesStrelka}
+    .into { samplesGatk ; samplesManta ; samplesStrelka ; samplesCGP}
 
 process gatk {
 
@@ -140,6 +140,39 @@ process strelka {
     			   --indelCandidates !{mantaVcf[0]}
     			   
     ${PWD}/strelka/runWorkflow.py -m local -j !{task.cpus} -g !{task.memory.toGiga()}
+	
+    '''
+}
+
+process cgp {
+
+	tag { parameters.name }
+		     
+    input:
+    val(parameters) from samplesCGP
+    
+    output:
+    file('cgpwgs_${parameters.name}') into outCGP
+    
+    shell:
+    '''
+        
+    shopt -s expand_aliases
+    
+    ds-cgpwgs.pl \
+		-r !{params.reference} \
+		-a !{params.VAGrENT} \
+		-si !{params.SNVIndel} \
+		-cs !{params.CNVSV} \
+		-sc !{params.SUBCL} \
+		-qc !{params.QC} \
+		-t !{parameters.tumor} \
+		-tidx !{parameters.tumor}.bai \
+		-n !{parameters.normal} \
+		-nidx !{parameters.normal}.bai \
+		-o ./cgpwgs_!{parameters.name} \
+		-c !{task.cpus} \
+		-e !{params.exclude}
 	
     '''
 }
