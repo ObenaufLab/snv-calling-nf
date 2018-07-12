@@ -172,7 +172,8 @@ process cgp {
 		-nidx !{parameters.normal}.bai \
 		-o ./cgpwgs_!{parameters.name} \
 		-c !{task.cpus} \
-		-e !{params.exclude}
+		-e !{params.exclude} \
+		-cr 350000
 	
     '''
 }
