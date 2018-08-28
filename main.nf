@@ -60,14 +60,14 @@ def helpMessage() {
 Channel
     .fromPath( params.samples )
     .splitCsv(sep: '\t', header: true)
-    .into { samplesChannel ; setupChannel }
+    .into { setupChannel ; submitChannel }
 
 process somaticSeqSetup {
 
 	tag { parameters.name }
 		     
     input:
-    val(parameters) from samplesChannel
+    val(parameters) from setupChannel
     
     output:
     file('somaticseq') into outSomaticSeqSetup
@@ -88,12 +88,12 @@ process somaticSeqSetup {
     '''
 }
 
-process lofreq {
+process submitSLURM {
 
 	tag { parameters.name }
 		     
     input:
-    val(parameters) from setupChannel
+    val(parameters) from submitChannel
     file(somaticseq) from outSomaticSeqSetup
     
     output:
