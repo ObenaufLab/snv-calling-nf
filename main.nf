@@ -104,15 +104,20 @@ process lofreq {
         
     shopt -s expand_aliases
     
-    sed -i '/^#/d' somaticseq/1/logs/lofreq_*.cmd
-    sed -i 's/\\/mnt\\///g' somaticseq/1/logs/lofreq_*.cmd
-    sed -i 's/.*lethalfang/singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' somaticseq/1/logs/lofreq_*.cmd
-    sed -i 's/\\.singularity\\S*/&.img/' somaticseq/1/logs/lofreq_*.cmd
-    echo -e "#SBATCH --mem 49152\n$(cat somaticseq/1/logs/lofreq_*.cmd)"
-    echo -e "#SBATCH --error=somaticseq/1/logs/lofreq_slurm-%j.err\n$(cat somaticseq/1/logs/lofreq_*.cmd)"
-    echo -e "#SBATCH --output=somaticseq/1/logs/lofreq_slurm-%j.out\n$(cat somaticseq/1/logs/lofreq_*.cmd)"
-    echo -e "#!/usr/bin/env bash\\n$(cat somaticseq/1/logs/lofreq_*.cmd)"
-	
+    for log in `ls somaticseq/*/logs/*lofreq*.cmd`
+	do
+		filepath=$(dirname $log)
+    	sed -i '/^#/d' $log
+    	sed -i 's/\\/mnt\\///g' $log
+    	sed -i 's/.*lethalfang/singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' $log
+    	sed -i 's/\\.singularity\\S*/&.img/' $log
+    	echo -e "#SBATCH --mem 49152\n$(cat $log)" > $log
+    	echo -e "#SBATCH --error=$filepath/lofreq_slurm-%j.err\n$(cat $log)" > $log
+    	echo -e "#SBATCH --output=$filepath/lofreq_slurm-%j.out\n$(cat $log)" > $log
+    	echo -e "#!/usr/bin/env bash\\n$(cat $log)" > $log
+	done
+    
+
     '''
 }
 
