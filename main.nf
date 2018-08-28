@@ -116,6 +116,73 @@ process lofreq {
     	echo -e "#SBATCH --output=$filepath/lofreq_slurm-%j.out\n$(cat $log)" > $log
     	echo -e "#!/usr/bin/env bash\\n$(cat $log)" > $log
 	done
+	
+	for log in `ls somaticseq/*/logs/*mutect2*.cmd`
+	do
+		filepath=$(dirname $log)
+    	sed -i '/^#/d' $log
+    	sed -i 's/\\/mnt\\///g' $log
+    	sed -i 's/.*lethalfang/singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' $log
+    	sed -i 's/.*broadinstitute/singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' $log
+    	sed -i 's/\\.singularity\\S*/&.img/' $log
+    	echo -e "#SBATCH -c 24\n$(cat $log)" > $log
+    	echo -e "#SBATCH --mem 49152\n$(cat $log)" > $log
+    	echo -e "#SBATCH --error=$filepath/mutect2_slurm-%j.err\n$(cat $log)" > $log
+    	echo -e "#SBATCH --output=$filepath/mutect2_slurm-%j.out\n$(cat $log)" > $log
+    	echo -e "#!/usr/bin/env bash\\n$(cat $log)" > $log
+	done
+	
+	for log in `ls somaticseq/*/logs/*scalpel*.cmd`
+	do
+		filepath=$(dirname $log)
+    	sed -i '/^#/d' $log
+    	sed -i 's/\\/mnt\\///g' $log
+    	sed -i 's/.*lethalfang/singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' $log
+    	sed -i 's/\\.singularity\\S*/&.img/' $log
+    	echo -e "#SBATCH --mem 49152\n$(cat $log)" > $log
+    	echo -e "#SBATCH --error=$filepath/scalpel_slurm-%j.err\n$(cat $log)" > $log
+    	echo -e "#SBATCH --output=$filepath/scalpel_slurm-%j.out\n$(cat $log)" > $log
+    	echo -e "#!/usr/bin/env bash\\n$(cat $log)" > $log
+	done
+	
+	for log in `ls somaticseq/*/logs/*strelka*.cmd`
+	do
+		filepath=$(dirname $log)
+    	sed -i '/^#/d' $log
+    	sed -i 's/\\/mnt\\///g' $log
+    	sed -i 's/.*lethalfang/singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' $log
+    	sed -i 's/\\.singularity\\S*/&.img/' $log
+    	echo -e "#SBATCH --mem 6144\n$(cat $log)" > $log
+    	echo -e "#SBATCH --error=$filepath/strelka_slurm-%j.err\n$(cat $log)" > $log
+    	echo -e "#SBATCH --output=$filepath/strelka_slurm-%j.out\n$(cat $log)" > $log
+    	echo -e "#!/usr/bin/env bash\\n$(cat $log)" > $log
+	done
+	
+	for log in `ls somaticseq/*/logs/*vardict*.cmd`
+	do
+		filepath=$(dirname $log)
+    	sed -i '/^#/d' $log
+    	sed -i 's/\\/mnt\\///g' $log
+    	sed -i 's/.*lethalfang/singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' $log
+    	sed -i 's/\\.singularity\\S*/&.img/' $log
+    	echo -e "#SBATCH --mem 6144\n$(cat $log)" > $log
+    	echo -e "#SBATCH --error=$filepath/vardict_slurm-%j.err\n$(cat $log)" > $log
+    	echo -e "#SBATCH --output=$filepath/vardict_slurm-%j.out\n$(cat $log)" > $log
+    	echo -e "#!/usr/bin/env bash\\n$(cat $log)" > $log
+	done
+	
+	for log in `ls somaticseq/logs/*somaticsniper*.cmd`
+	do
+		filepath=$(dirname $log)
+    	sed -i '/^#/d' $log
+    	sed -i 's/\\/mnt\\///g' $log
+    	sed -i 's/.*lethalfang/singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' $log
+    	sed -i 's/\\.singularity\\S*/&.img/' $log
+    	echo -e "#SBATCH --mem 6144\n$(cat $log)" > $log
+    	echo -e "#SBATCH --error=$filepath/somaticsniper_slurm-%j.err\n$(cat $log)" > $log
+    	echo -e "#SBATCH --output=$filepath/somaticsniper_slurm-%j.out\n$(cat $log)" > $log
+    	echo -e "#!/usr/bin/env bash\\n$(cat $log)" > $log
+	done
     
 
     '''
