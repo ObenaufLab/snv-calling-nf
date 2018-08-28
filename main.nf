@@ -70,7 +70,7 @@ process somaticSeqSetup {
     val(parameters) from samplesChannel
     
     output:
-    file('*.vcf') into outSomaticSeqSetup
+    file('somaticseq') into outSomaticSeqSetup
     
     shell:
     '''
@@ -84,6 +84,33 @@ process somaticSeqSetup {
     	--human-reference !{params.ref} \
     	--action echo --mutect2 --somaticsniper --vardict --scalpel --strelka --somaticseq --lofreq \
     	--threads !{task.cpus} --dbsnp /groups/zuber/zubarchive/USERS/tobias/hg38/GATK/Homo_sapiens_assembly38.dbsnp138.vcf
+	
+    '''
+}
+
+process lofreq {
+
+	tag { parameters.name }
+		     
+    input:
+    file('somaticseq') into outSomaticSeqSetup
+    
+    output:
+    file(somaticseq) into outSomaticSeqSetup
+    
+    shell:
+    '''
+        
+    shopt -s expand_aliases
+    
+    sed -i '/^#/d' somaticseq/1/logs/lofreq_*.cmd
+    sed -i 's/\/mnt\///g' somaticseq/1/logs/lofreq_*.cmd
+    sed -i 's/.*lethalfang/singularity exec \/groups\/zuber\/zubarchive\/USERS\/tobias\/.singularity/g' somaticseq/1/logs/lofreq_*.cmd
+    sed -i 's/\.singularity\S*/&.img/' somaticseq/1/logs/lofreq_*.cmd
+    echo -e "#SBATCH --mem 49152\n$(cat somaticseq/1/logs/lofreq_*.cmd)"
+    echo -e "#SBATCH --error=somaticseq/1/logs/lofreq_slurm-%j.err\n$(cat somaticseq/1/logs/lofreq_*.cmd)"
+    echo -e "#SBATCH --output=somaticseq/1/logs/lofreq_slurm-%j.out\n$(cat somaticseq/1/logs/lofreq_*.cmd)"
+    echo -e "#!/usr/bin/env bash\n$(cat somaticseq/1/logs/lofreq_*.cmd)"
 	
     '''
 }
