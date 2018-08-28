@@ -104,13 +104,13 @@ process lofreq {
     shopt -s expand_aliases
     
     sed -i '/^#/d' somaticseq/1/logs/lofreq_*.cmd
-    sed -i 's/\/mnt\///g' somaticseq/1/logs/lofreq_*.cmd
-    sed -i 's/.*lethalfang/singularity exec \/groups\/zuber\/zubarchive\/USERS\/tobias\/.singularity/g' somaticseq/1/logs/lofreq_*.cmd
-    sed -i 's/\.singularity\S*/&.img/' somaticseq/1/logs/lofreq_*.cmd
+    sed -i 's/\\/mnt\\///g' somaticseq/1/logs/lofreq_*.cmd
+    sed -i 's/.*lethalfang/singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' somaticseq/1/logs/lofreq_*.cmd
+    sed -i 's/\\.singularity\\S*/&.img/' somaticseq/1/logs/lofreq_*.cmd
     echo -e "#SBATCH --mem 49152\n$(cat somaticseq/1/logs/lofreq_*.cmd)"
     echo -e "#SBATCH --error=somaticseq/1/logs/lofreq_slurm-%j.err\n$(cat somaticseq/1/logs/lofreq_*.cmd)"
     echo -e "#SBATCH --output=somaticseq/1/logs/lofreq_slurm-%j.out\n$(cat somaticseq/1/logs/lofreq_*.cmd)"
-    echo -e "#!/usr/bin/env bash\n$(cat somaticseq/1/logs/lofreq_*.cmd)"
+    echo -e "#!/usr/bin/env bash\\n$(cat somaticseq/1/logs/lofreq_*.cmd)"
 	
     '''
 }
