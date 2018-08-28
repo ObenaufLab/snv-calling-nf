@@ -93,10 +93,10 @@ process lofreq {
 	tag { parameters.name }
 		     
     input:
-    file('somaticseq') into outSomaticSeqSetup
+    file(somaticseq) from outSomaticSeqSetup
     
     output:
-    file(somaticseq) into outSomaticSeqSetup
+    file('somaticseq') into out
     
     shell:
     '''
