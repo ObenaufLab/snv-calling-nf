@@ -60,123 +60,34 @@ def helpMessage() {
 Channel
     .fromPath( params.samples )
     .splitCsv(sep: '\t', header: true)
-    .into { samplesGatk ; samplesManta ; samplesStrelka ; samplesCGP}
+    .into { samplesChannel }
 
-process gatk {
+process somaticSeqSetup {
 
 	tag { parameters.name }
 		     
     input:
-    val(parameters) from samplesGatk
+    val(parameters) from samplesChannel
     
     output:
-    file('*.vcf') into outGatk
+    file('*.vcf') into outSomaticSeqSetup
     
     shell:
     '''
         
     shopt -s expand_aliases
     
-    gatk --spark-runner LOCAL \
-    	 --java-options '-Xmx!{task.memory.toGiga()}G' \
-    	Mutect2 \
-    	-R !{params.ref} \
-    	-I !{parameters.tumor} \
-    	-I !{parameters.normal} \
-    	-tumor !{parameters.name}T \
-    	-normal !{parameters.name}N \
-    	-O !{parameters.name}.vcf
+    /opt/somaticseq/utilities/dockered_pipelines/submit_callers_multiThreads.sh \
+    	-o somaticseq \
+    	--normal-bam !{parameters.normal} \
+    	--tumor-bam !{parameters.tumor} \
+    	--human-reference !{params.ref} \
+    	--action echo --mutect2 --somaticsniper --vardict --scalpel --strelka --somaticseq --lofreq \
+    	--threads !{task.cpus} --dbsnp /groups/zuber/zubarchive/USERS/tobias/hg38/GATK/Homo_sapiens_assembly38.dbsnp138.vcf
 	
     '''
 }
 
-process manta {
-
-	tag { parameters.name }
-		     
-    input:
-    val(parameters) from samplesManta
-    
-    output:
-    file ("manta/results/variants/candidateSmallIndels.vcf.gz*") into outManta
-    
-    shell:
-    '''
-        
-    shopt -s expand_aliases
-    
-    configManta.py --normalBam !{parameters.normal} \
-    			   --tumorBam !{parameters.tumor} \
-    			   --referenceFasta !{params.ref} \
-    			   --runDir manta \
-    			   --callRegions !{workflow.scriptFile.getParent() + "/util/hg19_chromosomes.bed.gz"}
-    			   
-    ${PWD}/manta/runWorkflow.py -m local -j !{task.cpus} -g !{task.memory.toGiga()}
-	
-    '''
-}
-
-process strelka {
-
-	tag { parameters.name }
-		     
-    input:
-    val(parameters) from samplesStrelka
-    file(mantaVcf) from outManta
-    
-    output:
-    file('strelka/results/variants/*') into outStrelka
-    
-    shell:
-    '''
-        
-    shopt -s expand_aliases
-        
-    configureStrelkaSomaticWorkflow.py --normalBam !{parameters.normal} \
-    			   --tumorBam !{parameters.tumor} \
-    			   --referenceFasta !{params.ref} \
-    			   --runDir strelka \
-    			   --callRegions !{workflow.scriptFile.getParent() + "/util/hg19_chromosomes.bed.gz"} \
-    			   --indelCandidates !{mantaVcf[0]}
-    			   
-    ${PWD}/strelka/runWorkflow.py -m local -j !{task.cpus} -g !{task.memory.toGiga()}
-	
-    '''
-}
-
-process cgp {
-
-	tag { parameters.name }
-		     
-    input:
-    val(parameters) from samplesCGP
-    
-    output:
-    file('cgpwgs_${parameters.name}') into outCGP
-    
-    shell:
-    '''
-        
-    shopt -s expand_aliases
-    
-    ds-cgpwgs.pl \
-		-r !{params.reference} \
-		-a !{params.VAGrENT} \
-		-si !{params.SNVIndel} \
-		-cs !{params.CNVSV} \
-		-sc !{params.SUBCL} \
-		-qc !{params.QC} \
-		-t !{parameters.tumor} \
-		-tidx !{parameters.tumor}.bai \
-		-n !{parameters.normal} \
-		-nidx !{parameters.normal}.bai \
-		-o ./cgpwgs_!{parameters.name} \
-		-c !{task.cpus} \
-		-e !{params.exclude} \
-		-cr 350000
-	
-    '''
-}
  
 workflow.onComplete { 
 	println ( workflow.success ? "Done!" : "Oops .. something went wrong" )
