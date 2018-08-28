@@ -60,7 +60,7 @@ def helpMessage() {
 Channel
     .fromPath( params.samples )
     .splitCsv(sep: '\t', header: true)
-    .set { samplesChannel, setupChannel }
+    .into { samplesChannel, setupChannel }
 
 process somaticSeqSetup {
 
