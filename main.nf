@@ -93,7 +93,7 @@ process lofreq {
 	tag { parameters.name }
 		     
     input:
-    val(parameters) from samplesChannel
+    val(parameters) from setupChannel
     file(somaticseq) from outSomaticSeqSetup
     
     output:
