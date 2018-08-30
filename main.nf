@@ -111,6 +111,7 @@ process submitSLURM {
     	sed -i 's/\\/mnt\\///g' $log
     	sed -i 's/.*lethalfang/singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' $log
     	sed -i 's/\\.singularity\\S*/&.img/' $log
+    	echo -e "#SBATCH --qos=long\n$(cat $log)" > $log
     	echo -e "#SBATCH --mem 49152\n$(cat $log)" > $log
     	echo -e "#SBATCH --error=$filepath/lofreq_slurm-%j.err\n$(cat $log)" > $log
     	echo -e "#SBATCH --output=$filepath/lofreq_slurm-%j.out\n$(cat $log)" > $log
@@ -123,7 +124,7 @@ process submitSLURM {
 		filepath=$(dirname $log)
     	sed -i '/^#/d' $log
     	sed -i 's/\\/mnt\\///g' $log
-    	sed -i 's/.*lethalfang/singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' $log
+    	sed -i 's/`.*lethalfang/`singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' $log
     	sed -i 's/.*broadinstitute/singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' $log
     	sed -i 's/\\.singularity\\S*/&.img/' $log
     	echo -e "#SBATCH -c 24\n$(cat $log)" > $log
@@ -141,6 +142,7 @@ process submitSLURM {
     	sed -i 's/\\/mnt\\///g' $log
     	sed -i 's/.*lethalfang/singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' $log
     	sed -i 's/\\.singularity\\S*/&.img/' $log
+    	echo -e "#SBATCH --qos=long\n$(cat $log)" > $log
     	echo -e "#SBATCH --mem 49152\n$(cat $log)" > $log
     	echo -e "#SBATCH --error=$filepath/scalpel_slurm-%j.err\n$(cat $log)" > $log
     	echo -e "#SBATCH --output=$filepath/scalpel_slurm-%j.out\n$(cat $log)" > $log
