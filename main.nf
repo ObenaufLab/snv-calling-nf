@@ -118,7 +118,6 @@ process submitSLURM {
     	echo -e "#SBATCH --error=$filepath/lofreq_slurm-%j.err\n$(cat $log)" > $log
     	echo -e "#SBATCH --output=$filepath/lofreq_slurm-%j.out\n$(cat $log)" > $log
     	echo -e "#!/usr/bin/env bash\\n$(cat $log)" > $log
-    	sbatch $log
 	done
 	
 	for log in `ls somaticseq_!{parameters.name}/*/logs/*mutect2*.cmd`
@@ -134,7 +133,6 @@ process submitSLURM {
     	echo -e "#SBATCH --error=$filepath/mutect2_slurm-%j.err\n$(cat $log)" > $log
     	echo -e "#SBATCH --output=$filepath/mutect2_slurm-%j.out\n$(cat $log)" > $log
     	echo -e "#!/usr/bin/env bash\\n$(cat $log)" > $log
-    	sbatch $log
 	done
 	
 	for log in `ls somaticseq_!{parameters.name}/*/logs/*scalpel*.cmd`
@@ -149,7 +147,6 @@ process submitSLURM {
     	echo -e "#SBATCH --error=$filepath/scalpel_slurm-%j.err\n$(cat $log)" > $log
     	echo -e "#SBATCH --output=$filepath/scalpel_slurm-%j.out\n$(cat $log)" > $log
     	echo -e "#!/usr/bin/env bash\\n$(cat $log)" > $log
-    	sbatch $log
 	done
 	
 	for log in `ls somaticseq_!{parameters.name}/*/logs/*strelka*.cmd`
@@ -163,7 +160,6 @@ process submitSLURM {
     	echo -e "#SBATCH --error=$filepath/strelka_slurm-%j.err\n$(cat $log)" > $log
     	echo -e "#SBATCH --output=$filepath/strelka_slurm-%j.out\n$(cat $log)" > $log
     	echo -e "#!/usr/bin/env bash\\n$(cat $log)" > $log
-    	sbatch $log
 	done
 	
 	for log in `ls somaticseq_!{parameters.name}/*/logs/*vardict*.cmd`
@@ -177,7 +173,6 @@ process submitSLURM {
     	echo -e "#SBATCH --error=$filepath/vardict_slurm-%j.err\n$(cat $log)" > $log
     	echo -e "#SBATCH --output=$filepath/vardict_slurm-%j.out\n$(cat $log)" > $log
     	echo -e "#!/usr/bin/env bash\\n$(cat $log)" > $log
-    	sbatch $log
 	done
 	
 	for log in `ls somaticseq_!{parameters.name}/logs/*somaticsniper*.cmd`
@@ -191,7 +186,6 @@ process submitSLURM {
     	echo -e "#SBATCH --error=$filepath/somaticsniper_slurm-%j.err\n$(cat $log)" > $log
     	echo -e "#SBATCH --output=$filepath/somaticsniper_slurm-%j.out\n$(cat $log)" > $log
     	echo -e "#!/usr/bin/env bash\\n$(cat $log)" > $log
-    	sbatch $log
 	done
 	
 	for log in `ls somaticseq_!{parameters.name}/*/SomaticSeq/logs/sseq_*.cmd`
@@ -210,43 +204,6 @@ process submitSLURM {
     
 
     '''
-    
-     if( params.submit )
-     	'''
-	    shopt -s expand_aliases
-	    
-	    for log in `ls somaticseq_!{parameters.name}/*/logs/*lofreq*.cmd`
-		do
-	    	sbatch $log
-		done
-		
-		for log in `ls somaticseq_!{parameters.name}/*/logs/*mutect2*.cmd`
-		do
-	    	sbatch $log
-		done
-		
-		for log in `ls somaticseq_!{parameters.name}/*/logs/*scalpel*.cmd`
-		do
-	    	sbatch $log
-		done
-		
-		for log in `ls somaticseq_!{parameters.name}/*/logs/*strelka*.cmd`
-		do
-	    	sbatch $log
-		done
-		
-		for log in `ls somaticseq_!{parameters.name}/*/logs/*vardict*.cmd`
-		do
-	    	sbatch $log
-		done
-		
-		for log in `ls somaticseq_!{parameters.name}/logs/*somaticsniper*.cmd`
-		do
-	    	sbatch $log
-		done
-		
-		'''
-     
 }
 
  
