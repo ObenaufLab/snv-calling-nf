@@ -62,7 +62,7 @@ params.submit = false
 Channel
     .fromPath( params.samples )
     .splitCsv(sep: '\t', header: true)
-    .into { setupChannel ; submitChannel }
+    .set { setupChannel }
 
 process somaticSeqSetup {
 
@@ -87,25 +87,6 @@ process somaticSeqSetup {
     	--action echo --mutect2 --somaticsniper --vardict --scalpel --strelka --somaticseq --lofreq \
     	--threads !{task.cpus} --dbsnp /groups/zuber/zubarchive/USERS/tobias/hg38/GATK/Homo_sapiens_assembly38.dbsnp138.vcf
 	
-    '''
-}
-
-process submitSLURM {
-
-	tag { parameters.name }
-		     
-    input:
-    val(parameters) from submitChannel
-    file(somaticseq) from outSomaticSeqSetup
-    
-    output:
-    file("somaticseq_${parameters.name}") into out
-    
-    shell:
-    '''
-        
-    shopt -s expand_aliases
-    
     for log in `ls somaticseq_!{parameters.name}/*/logs/*lofreq*.cmd`
 	do
 		filepath=$(dirname $log)
