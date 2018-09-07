@@ -72,7 +72,7 @@ process somaticSeqSetup {
     val(parameters) from setupChannel
     
     output:
-    file('somaticseq_${parameters.name}') into outSomaticSeqSetup
+    file("somaticseq_${parameters.name}") into outSomaticSeqSetup
     
     shell:
     '''
@@ -99,7 +99,7 @@ process submitSLURM {
     file(somaticseq) from outSomaticSeqSetup
     
     output:
-    file('somaticseq_${parameters.name}') into out
+    file("somaticseq_${parameters.name}") into out
     
     shell:
     '''
