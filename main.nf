@@ -57,6 +57,8 @@ def helpMessage() {
     """.stripIndent()
 }
 
+params.submit = false 
+
 Channel
     .fromPath( params.samples )
     .splitCsv(sep: '\t', header: true)
@@ -70,7 +72,7 @@ process somaticSeqSetup {
     val(parameters) from setupChannel
     
     output:
-    file('somaticseq') into outSomaticSeqSetup
+    file('somaticseq_${parameters.name}') into outSomaticSeqSetup
     
     shell:
     '''
@@ -78,7 +80,7 @@ process somaticSeqSetup {
     shopt -s expand_aliases
     
     /opt/somaticseq/utilities/dockered_pipelines/submit_callers_multiThreads.sh \
-    	-o somaticseq \
+    	-o somaticseq_!{parameters.name} \
     	--normal-bam !{parameters.normal} \
     	--tumor-bam !{parameters.tumor} \
     	--human-reference !{params.ref} \
@@ -97,14 +99,14 @@ process submitSLURM {
     file(somaticseq) from outSomaticSeqSetup
     
     output:
-    file('somaticseq') into out
+    file('somaticseq_${parameters.name}') into out
     
     shell:
     '''
         
     shopt -s expand_aliases
     
-    for log in `ls somaticseq/*/logs/*lofreq*.cmd`
+    for log in `ls somaticseq_!{parameters.name}/*/logs/*lofreq*.cmd`
 	do
 		filepath=$(dirname $log)
     	sed -i '/^#/d' $log
@@ -119,7 +121,7 @@ process submitSLURM {
     	sbatch $log
 	done
 	
-	for log in `ls somaticseq/*/logs/*mutect2*.cmd`
+	for log in `ls somaticseq_!{parameters.name}/*/logs/*mutect2*.cmd`
 	do
 		filepath=$(dirname $log)
     	sed -i '/^#/d' $log
@@ -135,7 +137,7 @@ process submitSLURM {
     	sbatch $log
 	done
 	
-	for log in `ls somaticseq/*/logs/*scalpel*.cmd`
+	for log in `ls somaticseq_!{parameters.name}/*/logs/*scalpel*.cmd`
 	do
 		filepath=$(dirname $log)
     	sed -i '/^#/d' $log
@@ -150,7 +152,7 @@ process submitSLURM {
     	sbatch $log
 	done
 	
-	for log in `ls somaticseq/*/logs/*strelka*.cmd`
+	for log in `ls somaticseq_!{parameters.name}/*/logs/*strelka*.cmd`
 	do
 		filepath=$(dirname $log)
     	sed -i '/^#/d' $log
@@ -164,7 +166,7 @@ process submitSLURM {
     	sbatch $log
 	done
 	
-	for log in `ls somaticseq/*/logs/*vardict*.cmd`
+	for log in `ls somaticseq_!{parameters.name}/*/logs/*vardict*.cmd`
 	do
 		filepath=$(dirname $log)
     	sed -i '/^#/d' $log
@@ -178,7 +180,7 @@ process submitSLURM {
     	sbatch $log
 	done
 	
-	for log in `ls somaticseq/logs/*somaticsniper*.cmd`
+	for log in `ls somaticseq_!{parameters.name}/logs/*somaticsniper*.cmd`
 	do
 		filepath=$(dirname $log)
     	sed -i '/^#/d' $log
@@ -192,7 +194,7 @@ process submitSLURM {
     	sbatch $log
 	done
 	
-	for log in `ls somaticseq/*/SomaticSeq/logs/sseq_*.cmd`
+	for log in `ls somaticseq_!{parameters.name}/*/SomaticSeq/logs/sseq_*.cmd`
 	do
 		filepath=$(dirname $log)
 		sed -i '/docker pull/d' $log
@@ -208,6 +210,43 @@ process submitSLURM {
     
 
     '''
+    
+     if( params.submit )
+     	'''
+	    shopt -s expand_aliases
+	    
+	    for log in `ls somaticseq_!{parameters.name}/*/logs/*lofreq*.cmd`
+		do
+	    	sbatch $log
+		done
+		
+		for log in `ls somaticseq_!{parameters.name}/*/logs/*mutect2*.cmd`
+		do
+	    	sbatch $log
+		done
+		
+		for log in `ls somaticseq_!{parameters.name}/*/logs/*scalpel*.cmd`
+		do
+	    	sbatch $log
+		done
+		
+		for log in `ls somaticseq_!{parameters.name}/*/logs/*strelka*.cmd`
+		do
+	    	sbatch $log
+		done
+		
+		for log in `ls somaticseq_!{parameters.name}/*/logs/*vardict*.cmd`
+		do
+	    	sbatch $log
+		done
+		
+		for log in `ls somaticseq_!{parameters.name}/logs/*somaticsniper*.cmd`
+		do
+	    	sbatch $log
+		done
+		
+		'''
+     
 }
 
  
