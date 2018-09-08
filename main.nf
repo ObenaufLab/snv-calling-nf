@@ -81,7 +81,7 @@ process somaticSeqSetup {
 	        
 	    shopt -s expand_aliases
 	    
-	    /opt/somaticseq/utilities/dockered_pipelines/submit_callers_multiThreads.sh \
+	    singularity exec ~/.singularity/somaticseq:3.0.0.img /opt/somaticseq/utilities/dockered_pipelines/submit_callers_multiThreads.sh \
 	    	-o somaticseq_!{parameters.name} \
 	    	--normal-bam !{parameters.normal} \
 	    	--tumor-bam !{parameters.tumor} \
