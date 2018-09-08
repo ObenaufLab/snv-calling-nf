@@ -190,40 +190,6 @@ process somaticSeqSetup {
     
 
     '''
-    
-    if( params.submit )
-    	'''
-    	for log in `ls somaticseq_!{parameters.name}/*/logs/*lofreq*.cmd`
-		do
-			sbatch $log
-		done
-		
-		for log in `ls somaticseq_!{parameters.name}/*/logs/*mutect2*.cmd`
-		do
-			sbatch $log
-		done
-		
-		for log in `ls somaticseq_!{parameters.name}/*/logs/*scalpel*.cmd`
-		do
-			sbatch $log
-		done
-		
-		for log in `ls somaticseq_!{parameters.name}/*/logs/*strelka*.cmd`
-		do
-			sbatch $log
-		done
-		
-		for log in `ls somaticseq_!{parameters.name}/*/logs/*vardict*.cmd`
-		do
-			sbatch $log
-		done
-		
-		for log in `ls somaticseq_!{parameters.name}/logs/*somaticsniper*.cmd`
-		do
-			sbatch $log
-		done
-    	
-    	'''
 }
 
  
