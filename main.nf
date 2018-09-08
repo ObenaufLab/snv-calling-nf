@@ -76,7 +76,7 @@ process somaticSeqSetup {
     
     shell:
     
-    if( params.submit )
+    if( !params.submit )
 	    '''
 	        
 	    shopt -s expand_aliases
