@@ -184,7 +184,7 @@ process somaticSeqSetup {
 	done
 	
 	echo "cd .." >> somaticseq_!{parameters.name}/submitSomaticSeq.sh
-	echo "for log in \`ls somaticseq_!{parameters.name}/*/SomaticSeq/logs/sseq_*.cmd\`" >> somaticseq_!{parameters.name}/submitSomaticSeq.sh
+	echo "for log in \\\`ls somaticseq_!{parameters.name}/*/SomaticSeq/logs/sseq_*.cmd\\\`" >> somaticseq_!{parameters.name}/submitSomaticSeq.sh
 	echo "	sbatch $log" >> somaticseq_!{parameters.name}/submitSomaticSeq.sh
 	echo "done" >> somaticseq_!{parameters.name}/submitSomaticSeq.sh
     
