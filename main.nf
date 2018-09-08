@@ -182,9 +182,48 @@ process somaticSeqSetup {
     	echo -e "#SBATCH --output=$filepath/sseq_slurm-%j.out\n$(cat $log)" > $log
     	echo -e "#!/usr/bin/env bash\\n$(cat $log)" > $log
 	done
+	
+	echo "cd .." >> somaticseq_!{parameters.name}/submitSomaticSeq.sh
+	echo "for log in `ls somaticseq_!{parameters.name}/*/SomaticSeq/logs/sseq_*.cmd`" >> somaticseq_!{parameters.name}/submitSomaticSeq.sh
+	echo "	sbatch $log" >> somaticseq_!{parameters.name}/submitSomaticSeq.sh
+	echo "done" >> somaticseq_!{parameters.name}/submitSomaticSeq.sh
     
 
     '''
+    
+    if( params.submit )
+    	'''
+    	for log in `ls somaticseq_!{parameters.name}/*/logs/*lofreq*.cmd`
+		do
+			sbatch $log
+		done
+		
+		for log in `ls somaticseq_!{parameters.name}/*/logs/*mutect2*.cmd`
+		do
+			sbatch $log
+		done
+		
+		for log in `ls somaticseq_!{parameters.name}/*/logs/*scalpel*.cmd`
+		do
+			sbatch $log
+		done
+		
+		for log in `ls somaticseq_!{parameters.name}/*/logs/*strelka*.cmd`
+		do
+			sbatch $log
+		done
+		
+		for log in `ls somaticseq_!{parameters.name}/*/logs/*vardict*.cmd`
+		do
+			sbatch $log
+		done
+		
+		for log in `ls somaticseq_!{parameters.name}/logs/*somaticsniper*.cmd`
+		do
+			sbatch $log
+		done
+    	
+    	'''
 }
 
  
