@@ -190,6 +190,17 @@ process somaticSeqSetup {
 		echo "do" >> somaticseq_!{parameters.name}/submitSomaticSeq.sh
 		echo "	sbatch \\$log" >> somaticseq_!{parameters.name}/submitSomaticSeq.sh
 		echo "done" >> somaticseq_!{parameters.name}/submitSomaticSeq.sh
+		
+		echo "singularity exec /groups/zuber/zubarchive/USERS/tobias/.singularity/vcftools\\:v0.1.15_cv1.img vcf-concat */SomaticSeq/Consensus.sSNV.vcf > concat.vcf" >> somaticseq_!{parameters.name}/submitVcfMerge.sh
+		echo "singularity exec /groups/zuber/zubarchive/USERS/tobias/.singularity/vcftools\\:v0.1.15_cv1.img vcf-sort concat.vcf > SomaticSeq.sSNV.vcf" >> somaticseq_!{parameters.name}/submitVcfMerge.sh
+		echo "singularity exec /groups/zuber/zubarchive/USERS/tobias/.singularity/vcftools\\:v0.1.15_cv1.img bgzip SomaticSeq.sSNV.vcf" >> somaticseq_!{parameters.name}/submitVcfMerge.sh
+		echo "singularity exec /groups/zuber/zubarchive/USERS/tobias/.singularity/vcftools\\:v0.1.15_cv1.img tabix SomaticSeq.sSNV.vcf.gz" >> somaticseq_!{parameters.name}/submitVcfMerge.sh
+		echo "rm concat.vcf" >> somaticseq_!{parameters.name}/submitVcfMerge.sh
+		echo "singularity exec /groups/zuber/zubarchive/USERS/tobias/.singularity/vcftools\\:v0.1.15_cv1.img vcf-concat */SomaticSeq/Consensus.sINDEL.vcf > concat.vcf" >> somaticseq_!{parameters.name}/submitVcfMerge.sh
+		echo "singularity exec /groups/zuber/zubarchive/USERS/tobias/.singularity/vcftools\\:v0.1.15_cv1.img vcf-sort concat.vcf > SomaticSeq.sINDEL.vcf" >> somaticseq_!{parameters.name}/submitVcfMerge.sh
+		echo "singularity exec /groups/zuber/zubarchive/USERS/tobias/.singularity/vcftools\\:v0.1.15_cv1.img bgzip SomaticSeq.sINDEL.vcf" >> somaticseq_!{parameters.name}/submitVcfMerge.sh
+		echo "singularity exec /groups/zuber/zubarchive/USERS/tobias/.singularity/vcftools\\:v0.1.15_cv1.img tabix SomaticSeq.sINDEL.vcf.gz" >> somaticseq_!{parameters.name}/submitVcfMerge.sh
+		echo "rm concat.vcf" >> somaticseq_!{parameters.name}/submitVcfMerge.sh
 	    
 	
 	    '''
@@ -313,6 +324,19 @@ process somaticSeqSetup {
 		echo "do" >> somaticseq_!{parameters.name}/submitSomaticSeq.sh
 		echo "	sbatch \\$log" >> somaticseq_!{parameters.name}/submitSomaticSeq.sh
 		echo "done" >> somaticseq_!{parameters.name}/submitSomaticSeq.sh
+		
+		echo "singularity exec /groups/zuber/zubarchive/USERS/tobias/.singularity/vcftools\\:v0.1.15_cv1.img vcf-concat */SomaticSeq/Consensus.sSNV.vcf > concat.vcf" >> somaticseq_!{parameters.name}/submitVcfMerge.sh
+		echo "singularity exec /groups/zuber/zubarchive/USERS/tobias/.singularity/vcftools\\:v0.1.15_cv1.img vcf-sort concat.vcf > SomaticSeq.sSNV.vcf" >> somaticseq_!{parameters.name}/submitVcfMerge.sh
+		echo "singularity exec /groups/zuber/zubarchive/USERS/tobias/.singularity/vcftools\\:v0.1.15_cv1.img bgzip SomaticSeq.sSNV.vcf" >> somaticseq_!{parameters.name}/submitVcfMerge.sh
+		echo "singularity exec /groups/zuber/zubarchive/USERS/tobias/.singularity/vcftools\\:v0.1.15_cv1.img tabix SomaticSeq.sSNV.vcf.gz" >> somaticseq_!{parameters.name}/submitVcfMerge.sh
+		echo "rm concat.vcf" >> somaticseq_!{parameters.name}/submitVcfMerge.sh
+		echo "singularity exec /groups/zuber/zubarchive/USERS/tobias/.singularity/vcftools\\:v0.1.15_cv1.img vcf-concat */SomaticSeq/Consensus.sINDEL.vcf > concat.vcf" >> somaticseq_!{parameters.name}/submitVcfMerge.sh
+		echo "singularity exec /groups/zuber/zubarchive/USERS/tobias/.singularity/vcftools\\:v0.1.15_cv1.img vcf-sort concat.vcf > SomaticSeq.sINDEL.vcf" >> somaticseq_!{parameters.name}/submitVcfMerge.sh
+		echo "singularity exec /groups/zuber/zubarchive/USERS/tobias/.singularity/vcftools\\:v0.1.15_cv1.img bgzip SomaticSeq.sINDEL.vcf" >> somaticseq_!{parameters.name}/submitVcfMerge.sh
+		echo "singularity exec /groups/zuber/zubarchive/USERS/tobias/.singularity/vcftools\\:v0.1.15_cv1.img tabix SomaticSeq.sINDEL.vcf.gz" >> somaticseq_!{parameters.name}/submitVcfMerge.sh
+		echo "rm concat.vcf" >> somaticseq_!{parameters.name}/submitVcfMerge.sh
+		
+		
 	    
 	
 	    '''
