@@ -111,6 +111,7 @@ process somaticSeqSetup {
 	    	sed -i 's/`.*lethalfang/`singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' $log
 	    	sed -i 's/.*broadinstitute/singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' $log
 	    	sed -i 's/\\.singularity\\S*/&.img/' $log
+	    	echo -e "#SBATCH --qos=long\n$(cat $log)" > $log
 	    	echo -e "#SBATCH -c 24\n$(cat $log)" > $log
 	    	echo -e "#SBATCH --mem 49152\n$(cat $log)" > $log
 	    	echo -e "#SBATCH --error=$filepath/mutect2_slurm-%j.err\n$(cat $log)" > $log
@@ -152,6 +153,7 @@ process somaticSeqSetup {
 	    	sed -i 's/\\/mnt\\///g' $log
 	    	sed -i 's/.*lethalfang/singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' $log
 	    	sed -i 's/\\.singularity\\S*/&.img/' $log
+	    	echo -e "#SBATCH --qos=long\n$(cat $log)" > $log
 	    	echo -e "#SBATCH --mem 6144\n$(cat $log)" > $log
 	    	echo -e "#SBATCH --error=$filepath/vardict_slurm-%j.err\n$(cat $log)" > $log
 	    	echo -e "#SBATCH --output=$filepath/vardict_slurm-%j.out\n$(cat $log)" > $log
@@ -240,6 +242,7 @@ process somaticSeqSetup {
 	    	sed -i 's/`.*lethalfang/`singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' $log
 	    	sed -i 's/.*broadinstitute/singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' $log
 	    	sed -i 's/\\.singularity\\S*/&.img/' $log
+	    	echo -e "#SBATCH --qos=long\n$(cat $log)" > $log
 	    	echo -e "#SBATCH -c 24\n$(cat $log)" > $log
 	    	echo -e "#SBATCH --mem 49152\n$(cat $log)" > $log
 	    	echo -e "#SBATCH --error=$filepath/mutect2_slurm-%j.err\n$(cat $log)" > $log
@@ -284,6 +287,7 @@ process somaticSeqSetup {
 	    	sed -i 's/\\/mnt\\///g' $log
 	    	sed -i 's/.*lethalfang/singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' $log
 	    	sed -i 's/\\.singularity\\S*/&.img/' $log
+	    	echo -e "#SBATCH --qos=long\n$(cat $log)" > $log
 	    	echo -e "#SBATCH --mem 6144\n$(cat $log)" > $log
 	    	echo -e "#SBATCH --error=$filepath/vardict_slurm-%j.err\n$(cat $log)" > $log
 	    	echo -e "#SBATCH --output=$filepath/vardict_slurm-%j.out\n$(cat $log)" > $log
