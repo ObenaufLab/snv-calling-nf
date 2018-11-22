@@ -87,7 +87,9 @@ process somaticSeqSetup {
 	    	--tumor-bam !{parameters.tumor} \
 	    	--human-reference !{params.ref} \
 	    	--action echo --mutect2 --somaticsniper --vardict --scalpel --strelka --somaticseq --lofreq \
-	    	--threads !{task.cpus} --dbsnp /groups/zuber/zubarchive/USERS/tobias/hg38/GATK/Homo_sapiens_assembly38.dbsnp138.vcf
+	    	--threads !{task.cpus} --dbsnp /groups/zuber/zubarchive/USERS/tobias/hg38/GATK/Homo_sapiens_assembly38.dbsnp138.vcf \
+	    	--classifier-snv  /groups/obenauf/NGS_data/GIAB/tumor-normal/somaticSeq/train/model/Ensemble.sSNV.tsv.ntChange.Classifier.RData \
+			--classifier-indel /groups/obenauf/NGS_data/GIAB/tumor-normal/somaticSeq/train/model/Ensemble.sINDEL.tsv.ntChange.Classifier.RData
 		
 	    for log in `ls somaticseq_!{parameters.name}/*/logs/*lofreq*.cmd`
 		do
@@ -217,7 +219,9 @@ process somaticSeqSetup {
 	    	--tumor-bam !{parameters.tumor} \
 	    	--human-reference !{params.ref} \
 	    	--action echo --mutect2 --somaticsniper --vardict --scalpel --strelka --somaticseq --lofreq \
-	    	--threads !{task.cpus} --dbsnp /groups/zuber/zubarchive/USERS/tobias/hg38/GATK/Homo_sapiens_assembly38.dbsnp138.vcf
+	    	--threads !{task.cpus} --dbsnp /groups/zuber/zubarchive/USERS/tobias/hg38/GATK/Homo_sapiens_assembly38.dbsnp138.vcf \
+	    	--classifier-snv  /groups/obenauf/NGS_data/GIAB/tumor-normal/somaticSeq/train/model/Ensemble.sSNV.tsv.ntChange.Classifier.RData \
+			--classifier-indel /groups/obenauf/NGS_data/GIAB/tumor-normal/somaticSeq/train/model/Ensemble.sINDEL.tsv.ntChange.Classifier.RData
 		
 	    for log in `ls somaticseq_!{parameters.name}/*/logs/*lofreq*.cmd`
 		do
