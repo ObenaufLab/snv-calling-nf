@@ -169,6 +169,7 @@ process somaticSeqSetup {
 	    	sed -i 's/\\/mnt\\///g' $log
 	    	sed -i 's/.*lethalfang/singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' $log
 	    	sed -i 's/\\.singularity\\S*/&.img/' $log
+	    	echo -e "#SBATCH --qos=long\n$(cat $log)" > $log
 	    	echo -e "#SBATCH --mem 6144\n$(cat $log)" > $log
 	    	echo -e "#SBATCH --error=$filepath/somaticsniper_slurm-%j.err\n$(cat $log)" > $log
 	    	echo -e "#SBATCH --output=$filepath/somaticsniper_slurm-%j.out\n$(cat $log)" > $log
@@ -183,7 +184,7 @@ process somaticSeqSetup {
 	    	sed -i 's/\\/mnt\\///g' $log
 	    	sed -i 's/.*lethalfang/singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' $log
 	    	sed -i 's/\\.singularity\\S*/&.img/' $log
-	    	echo -e "#SBATCH --mem 6144\n$(cat $log)" > $log
+	    	echo -e "#SBATCH --mem=50G\n$(cat $log)" > $log
 	    	echo -e "#SBATCH --error=$filepath/sseq_slurm-%j.err\n$(cat $log)" > $log
 	    	echo -e "#SBATCH --output=$filepath/sseq_slurm-%j.out\n$(cat $log)" > $log
 	    	echo -e "#!/usr/bin/env bash\\n$(cat $log)" > $log
@@ -306,6 +307,7 @@ process somaticSeqSetup {
 	    	sed -i 's/\\/mnt\\///g' $log
 	    	sed -i 's/.*lethalfang/singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' $log
 	    	sed -i 's/\\.singularity\\S*/&.img/' $log
+	    	echo -e "#SBATCH --qos=long\n$(cat $log)" > $log
 	    	echo -e "#SBATCH --mem 6144\n$(cat $log)" > $log
 	    	echo -e "#SBATCH --error=$filepath/somaticsniper_slurm-%j.err\n$(cat $log)" > $log
 	    	echo -e "#SBATCH --output=$filepath/somaticsniper_slurm-%j.out\n$(cat $log)" > $log
@@ -321,7 +323,7 @@ process somaticSeqSetup {
 	    	sed -i 's/\\/mnt\\///g' $log
 	    	sed -i 's/.*lethalfang/singularity exec \\/groups\\/zuber\\/zubarchive\\/USERS\\/tobias\\/.singularity/g' $log
 	    	sed -i 's/\\.singularity\\S*/&.img/' $log
-	    	echo -e "#SBATCH --mem 6144\n$(cat $log)" > $log
+	    	echo -e "#SBATCH --mem=50G\n$(cat $log)" > $log
 	    	echo -e "#SBATCH --error=$filepath/sseq_slurm-%j.err\n$(cat $log)" > $log
 	    	echo -e "#SBATCH --output=$filepath/sseq_slurm-%j.out\n$(cat $log)" > $log
 	    	echo -e "#!/usr/bin/env bash\\n$(cat $log)" > $log
